@@ -22,7 +22,18 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ Auth::user()->name }}
+                        <?php
+                        $adminId = 0;
+                        if( auth()->guard('admin')->check() ){
+                        $adminId = Auth::guard('admin')->user()->id;
+                        }
+                        $user = App\Models\Admin::where('id',$adminId)->first();
+                        ?>
+                        @if(isset($user->name))
+                            {{$user->name}}
+                        @else
+                        Admin
+                        @endif
                         </a>
                         <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{{ route('admin.logout') }}"
